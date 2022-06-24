@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:the_planetary/helpers/color_helper.dart';
+import 'package:the_planetary/screens/home_page.dart';
 
 class OnBoarding extends StatefulWidget {
   OnBoarding({Key? key}) : super(key: key);
@@ -13,6 +14,7 @@ class OnBoarding extends StatefulWidget {
 class _OnBoardingState extends State<OnBoarding> {
   int _currentIndex = 0;
   final controller = LiquidController();
+  bool _isLastIndex = false;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class _OnBoardingState extends State<OnBoarding> {
           enableSideReveal: true,
           onPageChangeCallback: (index) {
             setState(() {
-              _currentIndex = index;
+              _isLastIndex = index == 2;
             });
           },
           slideIconWidget: const Icon(
@@ -44,61 +46,83 @@ class _OnBoardingState extends State<OnBoarding> {
             )
           ],
         ),
-        Positioned(
-            bottom: 10,
-            left: 10,
-            right: 10,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  TextButton(
-                      onPressed: () {
-                        controller.jumpToPage(page: 2);
-                      },
-                      child: Text(
-                        controller.currentPage == 3 ? '' : 'Skip',
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'CerebriSansPro-Regular',
-                            fontSize: 8,
-                            fontWeight: FontWeight.normal),
-                      )),
-
-                  //for the indicator
-                  AnimatedSmoothIndicator(
-                    activeIndex: controller.currentPage,
-                    count: 3,
-                    effect: const WormEffect(
-                      spacing: 10,
-                      dotColor: Colors.black,
-                      activeDotColor: Colors.white12,
+        _isLastIndex
+            ? Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (_) => HomePage()));
+                  },
+                  child: Container(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width,
+                    color: AppColor.Tertiary_Color,
+                    child: const Center(
+                      child: Text('Get started',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'CerebriSansPro-Regular',
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700)),
                     ),
-                    onDotClicked: (index) {
-                      controller.animateToPage(page: index);
-                      setState(() {
-                        _currentIndex = index;
-                      });
-                    },
                   ),
-                  TextButton(
-                      onPressed: () {
-                        final page = controller.currentPage + 1;
-                        controller.animateToPage(
-                            page: page > 3 ? 0 : page, duration: 400);
-                      },
-                      child: const Text(
-                        'Next',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'CerebriSansPro-Regular',
-                            fontSize: 8,
-                            fontWeight: FontWeight.normal),
-                      ))
-                ],
-              ),
-            ))
+                ),
+              )
+            : Positioned(
+                bottom: 10,
+                left: 10,
+                right: 10,
+                child: Padding(
+                    padding: const EdgeInsets.symmetric(),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        TextButton(
+                            onPressed: () {
+                              controller.jumpToPage(page: 2);
+                            },
+                            child: const Text(
+                              'Skip',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'CerebriSansPro-Regular',
+                                  fontSize: 8,
+                                  fontWeight: FontWeight.normal),
+                            )),
+
+                        //for the indicator
+                        AnimatedSmoothIndicator(
+                          activeIndex: controller.currentPage,
+                          count: 3,
+                          effect: const WormEffect(
+                            spacing: 10,
+                            dotColor: Colors.black,
+                            activeDotColor: Colors.white12,
+                          ),
+                          onDotClicked: (index) {
+                            controller.animateToPage(page: index);
+                            setState(() {});
+                          },
+                        ),
+                        TextButton(
+                            onPressed: () {
+                              final page = controller.currentPage + 1;
+                              controller.animateToPage(
+                                  page: page > 3 ? 0 : page, duration: 400);
+                            },
+                            child: const Text(
+                              'Next',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'CerebriSansPro-Regular',
+                                  fontSize: 8,
+                                  fontWeight: FontWeight.normal),
+                            ))
+                      ],
+                    )))
       ],
     ));
   }
@@ -115,7 +139,7 @@ class _mars extends StatelessWidget {
       color: AppColor.Tertiary_Color,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             AnimateImageMars(),
@@ -125,19 +149,19 @@ class _mars extends StatelessWidget {
             const Text('Mars',
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: 20,
+                    fontSize: 24,
                     fontFamily: 'CerebriSansPro-Regular',
                     fontWeight: FontWeight.w700)),
             const SizedBox(
               height: 24,
             ),
             Container(
-              // padding: const EdgeInsets.only(right: 32),
+              padding: const EdgeInsets.only(right: 32),
               child: const Text(
-                  'The Solar System is the gravitationally bound system of the Sun and the objects that orbit it.',
+                  'Mars is the fourth planet from the Sun and the second-smallest planet in the Solar System, being larger than only Mercury.',
                   style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 10,
+                    color: Colors.white12,
+                    fontSize: 12,
                     fontWeight: FontWeight.w300,
                     fontFamily: 'CerebriSansPro-Regular',
                   )),
@@ -190,29 +214,29 @@ class _earth extends StatelessWidget {
       color: AppColor.Secondary_Color,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             AnimateImageEarth(),
             const SizedBox(
               height: 64,
             ),
-            const Text('Mars',
+            const Text('Earth',
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: 20,
+                    fontSize: 24,
                     fontFamily: 'CerebriSansPro-Regular',
                     fontWeight: FontWeight.w700)),
             const SizedBox(
               height: 24,
             ),
             Container(
-              // padding: const EdgeInsets.only(right: 32),
+              padding: const EdgeInsets.only(right: 32),
               child: const Text(
-                  'The Solar System is the gravitationally bound system of the Sun and the objects that orbit it.',
+                  'Earth is the third planet from the Sun and the only astronomical object known to harbor life.',
                   style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 10,
+                    color: Colors.white12,
+                    fontSize: 12,
                     fontWeight: FontWeight.w300,
                     fontFamily: 'CerebriSansPro-Regular',
                   )),
@@ -265,14 +289,14 @@ class _venus extends StatelessWidget {
       color: AppColor.Primary_Color,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             AnimateImageVenus(),
             const SizedBox(
               height: 64,
             ),
-            const Text('Mars',
+            const Text('Venus',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -282,12 +306,12 @@ class _venus extends StatelessWidget {
               height: 24,
             ),
             Container(
-              // padding: const EdgeInsets.only(right: 32),
+              padding: const EdgeInsets.only(right: 32),
               child: const Text(
-                  'The Solar System is the gravitationally bound system of the Sun and the objects that orbit it.',
+                  'Venus is the second planet from the Sun and is named after the Roman goddess of love and beauty.',
                   style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 10,
+                    color: Colors.white12,
+                    fontSize: 12,
                     fontWeight: FontWeight.w300,
                     fontFamily: 'CerebriSansPro-Regular',
                   )),
