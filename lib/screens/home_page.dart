@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
         child: Stack(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 39, 20, 50),
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
               child: GridView(
                 children: DUMMY_DATA
                     .map((e) => PContent(

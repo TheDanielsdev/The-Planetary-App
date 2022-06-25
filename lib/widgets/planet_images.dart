@@ -49,7 +49,7 @@ class _PContentState extends State<PContent> {
             child: Image.asset(
               widget.image,
               fit: BoxFit.cover,
-              height: 130,
+              height: 95,
             ),
           )),
         ),
