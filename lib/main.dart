@@ -41,8 +41,14 @@ class OnBoarding extends StatefulWidget {
 
 class _OnBoardingState extends State<OnBoarding> {
   int _currentIndex = 0;
-  final controller = LiquidController();
+  LiquidController controller = LiquidController();
   bool _isLastIndex = false;
+
+  @override
+  void initState() {
+    controller = LiquidController();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -224,13 +230,19 @@ class AnimateImageMars extends StatefulWidget {
 
 class _AnimateImageMarsState extends State<AnimateImageMars>
     with SingleTickerProviderStateMixin {
-  late final AnimationController _controller =
+  late AnimationController _controller =
       AnimationController(vsync: this, duration: const Duration(seconds: 3))
         ..repeat(reverse: true);
   late final Animation<Offset> _animation = Tween(
     begin: Offset.zero,
     end: const Offset(0.05, 0),
   ).animate(_controller);
+
+  @override
+  void initState() {
+    _controller = AnimationController(vsync: this);
+    super.initState();
+  }
 
   @override
   void dispose() {
